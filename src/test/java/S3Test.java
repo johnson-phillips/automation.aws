@@ -1,29 +1,20 @@
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.UUID;
+import automation.aws.S3;
 
 public class S3Test {
+    S3 s3;
+
+    @BeforeSuite
+    public void beforeSuite() {
+        s3 = new S3(System.getProperty("aws_key"),System.getProperty("aws_secret"),System.getProperty("aws_bucket"));
+    }
 
     @Test
-    public void unitTest() throws Exception
-    {
-//        System.out.print("\r\n" + "Test started");
-//        String folder = UUID.randomUUID().toString();
-//        String filename = UUID.randomUUID().toString() + ".txt";
-//        String content = UUID.randomUUID().toString();
-//        S3.createFolder(folder);
-//        S3.uploadFile(folder + "/" + filename,content);
-//        String text = S3.getFile(folder+"/"+filename);
-//        Assert.assertEquals(text,content);
-//        System.out.print("\r\n" + "Test end");
-//        S3.deleteFile(folder + "/" + filename);
-//        S3.deleteFolder(folder);
-//        InputStream stream = S3.getStream("print/items/aed71dce8d74cbde0e357eeb98acc912.png");
-//        File file = new File(UUID.randomUUID().toString()+".png");
-//        FileUtils.copyInputStreamToFile(stream,file);
-//        Assert.assertEquals(file.exists(),true);
-//        file.delete();
+    public void unitTest() throws Exception {
+        s3.createFolder("unit_test");
+        s3.uploadFile("unit_test/test.json","{\"topic\":\"topic name\",\"value\":\"value\"}");
+        System.out.println(s3.getFile("unit_test/test.json"));
+        s3.deleteFile("unit_test/test.json");
     }
 }
